@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+
 import './App.css'
-import { BrowserRouter , Routes , Route ,Navigate, Router} from 'react-router'
-import { supabase } from './Supabase/supabaseClient'
-import { useEffect } from 'react'
-import { useState } from 'react'
-import landing from './pages/landing'
-import login from './pages/login'
-import signup from './pages/signup'
-import home from './pages/home'
+import { Routes, Route, Navigate } from 'react-router'
+import supabase from './Supabase/supabaseClient.js'
+
+import Landing from './pages/landing.jsx'
+import Login from './pages/login.jsx'
+import Signup from './pages/signup.jsx'
+import Home from './pages/home.jsx'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,23 +17,25 @@ function App() {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
     });
-    const { data: { listener } } = supabase.auth.onAuthStateChange((_, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
     });
 
     return () => {
-      listener.subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 
   return (
     <>
-    <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/landing" />} />
+        <Route path="/" element={<Navigate to="/landing" replace />} />
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" replace />} />
+        <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/home" replace />} />
+        <Route path="/home" element={user ? <Home /> : <Navigate to="/login" replace />} />
       </Routes>
-    </Router>
-     
+    
     </>
   )
 }

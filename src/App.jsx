@@ -8,6 +8,7 @@ import Landing from './pages/landing.jsx'
 import Login from './pages/login.jsx'
 import Signup from './pages/signup.jsx'
 import Home from './pages/home.jsx'
+import Redirect from './pages/redirect.jsx'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
         <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" replace />} />
         <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/home" replace />} />
         <Route path="/home" element={user ? <Home /> : <Navigate to="/login" replace />} />
+        <Route path="/s/:shortCode" element={<Redirect />} />
       </Routes>
     
     </>

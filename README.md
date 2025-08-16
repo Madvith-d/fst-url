@@ -75,8 +75,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/fasturl.git
-cd fasturl
+git clone https://github.com/madvith-d/fst-url.git
+cd fst-url
 ```
 
 ### 2. Install Dependencies
